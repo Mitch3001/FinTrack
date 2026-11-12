@@ -50,6 +50,18 @@
             box-shadow: 0 2px 10px var(--shadow); position: sticky; top: 0; z-index: 100;
         }
         .logo { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; font-size: 1.25rem; color: var(--accent); }
+        .nav-links { display: flex; gap: 0.5rem; align-items: center; }
+        .nav-link {
+            text-decoration: none; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;
+            padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.2s; cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--accent); background: rgba(189, 95, 60, 0.1); }
+        .nav-link.add-link {
+            background: var(--accent); color: white; border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; padding: 0;
+            box-shadow: 0 2px 8px rgba(189, 95, 60, 0.3);
+        }
+        .nav-link.add-link:hover { background: var(--accent-hover); transform: scale(1.05); }
         .theme-toggle { background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; color: var(--text-primary); transition: background 0.2s; }
         .theme-toggle:hover { background-color: rgba(189, 95, 60, 0.1); }
         .sun-icon { display: block; } .moon-icon { display: none; }
@@ -117,20 +129,31 @@
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--accent);
             z-index: 999; pointer-events: none; opacity: 0; clip-path: circle(0% at 50% 50%);
         }
-        .transition-overlay.active { animation: waveTransition 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .transition-overlay.active { animation: waveTransition 1.2s cubic-bezier(0.25, 0.1, 0.25, 1); }
         @keyframes waveTransition {
             0% { clip-path: circle(0% at 50% 50%); opacity: 1; }
-            50% { clip-path: circle(150% at 50% 50%); opacity: 1; }
+            20% { clip-path: circle(30% at 50% 50%); opacity: 1; }
+            40% { clip-path: circle(60% at 50% 50%); opacity: 1; }
+            60% { clip-path: circle(90% at 50% 50%); opacity: 1; }
+            80% { clip-path: circle(120% at 50% 50%); opacity: 0.8; }
             100% { clip-path: circle(150% at 50% 50%); opacity: 0; }
         }
-        .page-enter { animation: pageEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes pageEnter { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .page-enter { animation: pageEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes pageEnter { 
+            0% { opacity: 0; transform: translateY(30px); } 
+            50% { opacity: 0.5; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); } 
+        }
         .transaction-item {
             display: flex; justify-content: space-between; align-items: center; padding: 1rem;
             background: var(--bg-card); border-radius: 12px; margin-bottom: 0.75rem;
-            box-shadow: 0 2px 8px var(--shadow); animation: itemSlideIn 0.4s ease-out;
+            box-shadow: 0 2px 8px var(--shadow); animation: itemSlideIn 0.6s ease-out;
         }
-        @keyframes itemSlideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes itemSlideIn { 
+            0% { opacity: 0; transform: translateX(-20px); } 
+            60% { opacity: 0.8; transform: translateX(5px); }
+            100% { opacity: 1; transform: translateX(0); } 
+        }
         .transaction-info h4 { margin-bottom: 0.2rem; color: var(--text-primary); font-size: 1rem; }
         .transaction-info p { font-size: 0.8rem; color: var(--text-secondary); }
         .transaction-amount { font-weight: 700; font-size: 1.1rem; }
@@ -146,12 +169,16 @@
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1100; display: flex; flex-direction: column; gap: 0.75rem; }
         .toast {
             background: var(--bg-card); color: var(--text-primary); padding: 1rem 1.25rem;
-            border-radius: 12px; box-shadow: 0 8px 30px var(--shadow); animation: toastSlideIn 0.4s ease-out;
+            border-radius: 12px; box-shadow: 0 8px 30px var(--shadow); animation: toastSlideIn 0.5s ease-out;
             border-left: 4px solid var(--accent); max-width: 300px; font-size: 0.9rem;
         }
-        @keyframes toastSlideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastSlideIn { 
+            0% { opacity: 0; transform: translateX(100%); } 
+            70% { opacity: 1; transform: translateX(-5px); }
+            100% { opacity: 1; transform: translateX(0); } 
+        }
         .progress-bar { width: 100%; height: 8px; background: rgba(189, 95, 60, 0.2); border-radius: 4px; overflow: hidden; margin: 0.75rem 0; }
-        .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .insight-card { background: linear-gradient(135deg, var(--accent), var(--terracotta)); color: white; padding: 1.25rem; border-radius: 16px; margin-bottom: 1rem; }
         .insight-card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
         .insight-card p { font-size: 0.9rem; opacity: 0.9; line-height: 1.4; }
@@ -161,6 +188,7 @@
         @media (max-width: 768px) {
             .content-wrapper { padding: 1rem 1rem 100px; }
             .stats-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
         }
         @media (min-width: 769px) {
             .bottom-nav { display: none; }
@@ -171,9 +199,9 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
-        .chart-line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 1.5s ease-out forwards; }
+        .chart-line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 2s ease-out forwards; }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
-        .chart-pie-segment { transition: transform 0.2s; cursor: pointer; }
+        .chart-pie-segment { transition: transform 0.3s; cursor: pointer; }
         .chart-pie-segment:hover { transform: scale(1.05); }
     </style>
 </head>
@@ -186,6 +214,17 @@
                     <text x="50" y="68" font-family="Arial" font-size="55" fill="white" text-anchor="middle" font-weight="bold">₽</text>
                 </svg>
                 <span>FinTrack</span>
+            </div>
+            <div class="nav-links">
+                <a href="#/wallet" class="nav-link" data-route="/wallet">Кошелёк</a>
+                <a href="#/stats" class="nav-link" data-route="/stats">Статистика</a>
+                <a href="#/debts" class="nav-link" data-route="/debts">Долги</a>
+                <a href="#/goals" class="nav-link" data-route="/goals">Копилки</a>
+                <a href="#/timeline" class="nav-link" data-route="/timeline">Таймлайн</a>
+                <a href="#/settings" class="nav-link" data-route="/settings">Настройки</a>
+                <button class="nav-link add-link" id="addTransactionBtnDesktop" aria-label="Добавить транзакцию">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                </button>
             </div>
             <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
                 <svg class="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -261,7 +300,6 @@
     </div>
 
     <script type="module">
-        // ===== ХРАНИЛИЩЕ ДАННЫХ =====
         const DEFAULT_DATA = {
             transactions: [],
             categories: [
@@ -312,10 +350,7 @@
             applyTheme(appData.settings.theme);
         }
 
-        function saveData() {
-            localStorage.setItem('fintrack_data', JSON.stringify(appData));
-        }
-
+        function saveData() { localStorage.setItem('fintrack_data', JSON.stringify(appData)); }
         function getData() { return appData; }
 
         function addTransaction(transaction) {
@@ -325,61 +360,15 @@
             return transaction;
         }
 
-        function deleteTransaction(id) {
-            appData.transactions = appData.transactions.filter(t => t.id !== id);
-            saveData();
-        }
-
-        function addDebt(debt) {
-            debt.id = Date.now().toString(36);
-            debt.paid = 0;
-            appData.debts.push(debt);
-            saveData();
-        }
-
-        function updateDebtPayment(id, amount) {
-            const debt = appData.debts.find(d => d.id === id);
-            if (debt) {
-                debt.paid = Math.min(debt.paid + amount, debt.amount);
-                saveData();
-            }
-        }
-
-        function deleteDebt(id) {
-            appData.debts = appData.debts.filter(d => d.id !== id);
-            saveData();
-        }
-
-        function addGoal(goal) {
-            goal.id = Date.now().toString(36);
-            goal.saved = 0;
-            appData.goals.push(goal);
-            saveData();
-        }
-
-        function updateGoalSaving(id, amount) {
-            const goal = appData.goals.find(g => g.id === id);
-            if (goal) {
-                goal.saved = Math.min(goal.saved + amount, goal.target);
-                saveData();
-            }
-        }
-
-        function deleteGoal(id) {
-            appData.goals = appData.goals.filter(g => g.id !== id);
-            saveData();
-        }
-
-        function addSubscription(sub) {
-            sub.id = Date.now().toString(36);
-            appData.subscriptions.push(sub);
-            saveData();
-        }
-
-        function deleteSubscription(id) {
-            appData.subscriptions = appData.subscriptions.filter(s => s.id !== id);
-            saveData();
-        }
+        function deleteTransaction(id) { appData.transactions = appData.transactions.filter(t => t.id !== id); saveData(); }
+        function addDebt(debt) { debt.id = Date.now().toString(36); debt.paid = 0; appData.debts.push(debt); saveData(); }
+        function updateDebtPayment(id, amount) { const debt = appData.debts.find(d => d.id === id); if (debt) { debt.paid = Math.min(debt.paid + amount, debt.amount); saveData(); } }
+        function deleteDebt(id) { appData.debts = appData.debts.filter(d => d.id !== id); saveData(); }
+        function addGoal(goal) { goal.id = Date.now().toString(36); goal.saved = 0; appData.goals.push(goal); saveData(); }
+        function updateGoalSaving(id, amount) { const goal = appData.goals.find(g => g.id === id); if (goal) { goal.saved = Math.min(goal.saved + amount, goal.target); saveData(); } }
+        function deleteGoal(id) { appData.goals = appData.goals.filter(g => g.id !== id); saveData(); }
+        function addSubscription(sub) { sub.id = Date.now().toString(36); appData.subscriptions.push(sub); saveData(); }
+        function deleteSubscription(id) { appData.subscriptions = appData.subscriptions.filter(s => s.id !== id); saveData(); }
 
         function updateSetting(key, value) {
             appData.settings[key] = value;
@@ -387,9 +376,7 @@
             if (key === 'theme') applyTheme(value);
         }
 
-        function applyTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-        }
+        function applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); }
 
         function exportData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
@@ -404,22 +391,16 @@
         function importData(jsonString) {
             try {
                 const parsed = JSON.parse(jsonString);
-                if (parsed.transactions && parsed.categories) {
-                    appData = parsed;
-                    saveData();
-                    return true;
-                }
+                if (parsed.transactions && parsed.categories) { appData = parsed; saveData(); return true; }
                 return false;
             } catch (e) { return false; }
         }
 
-        // ===== ПАРСЕР =====
         function parseTransactionText(text) {
             const lowerText = text.toLowerCase().trim();
             const amountMatch = lowerText.match(/(\d+(?:[.,]\d+)?)\s*(?:руб|₽|r|rub|коп)?/i);
             const amount = amountMatch ? parseFloat(amountMatch[1].replace(',', '.')) : 0;
-            let category = 'other';
-            let type = 'expense';
+            let category = 'other', type = 'expense';
             const keywords = {
                 'food': ['продукт', 'магазин', 'пятерочка', 'магнит', 'перекресток', 'ашан', 'еда'],
                 'cafe': ['кофе', 'латте', 'капучино', 'ресторан', 'кафе', 'бургер', 'пицца', 'суши'],
@@ -437,12 +418,9 @@
             return { amount: amount > 0 ? amount : null, description: text.trim(), category, type };
         }
 
-        // ===== ГОЛОСОВОЙ ВВОД =====
         function initVoiceInput(inputElement, onResult) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                return () => alert('Голосовой ввод не поддерживается вашим браузером. Используйте Chrome или Яндекс.Браузер.');
-            }
+            if (!SpeechRecognition) return () => alert('Голосовой ввод не поддерживается. Используйте Chrome.');
             const recognition = new SpeechRecognition();
             recognition.lang = 'ru-RU';
             recognition.interimResults = false;
@@ -453,21 +431,17 @@
                 recognition.onresult = (event) => {
                     const transcript = event.results[0][0].transcript;
                     inputElement.value = transcript;
-                    inputElement.placeholder = "Например: кофе 250 или такси до дома";
+                    inputElement.placeholder = "Например: кофе 250";
                     if (onResult) onResult(transcript);
                 };
                 recognition.onerror = () => { inputElement.placeholder = "Ошибка распознавания."; };
-                recognition.onend = () => { inputElement.placeholder = "Например: кофе 250 или такси до дома"; };
+                recognition.onend = () => { inputElement.placeholder = "Например: кофе 250"; };
             };
         }
 
-        // ===== ГРАФИКИ =====
         function renderPieChart(data, container) {
             container.innerHTML = '';
-            if (!data || data.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Нет данных</p>';
-                return;
-            }
+            if (!data || data.length === 0) { container.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Нет данных</p>'; return; }
             const total = data.reduce((sum, item) => sum + item.value, 0);
             let cumulativePercent = 0;
             const size = 200, radius = 80, center = size / 2;
@@ -478,10 +452,8 @@
                 const percent = item.value / total;
                 const startAngle = cumulativePercent * 2 * Math.PI;
                 const endAngle = (cumulativePercent + percent) * 2 * Math.PI;
-                const x1 = center + radius * Math.cos(startAngle);
-                const y1 = center + radius * Math.sin(startAngle);
-                const x2 = center + radius * Math.cos(endAngle);
-                const y2 = center + radius * Math.sin(endAngle);
+                const x1 = center + radius * Math.cos(startAngle), y1 = center + radius * Math.sin(startAngle);
+                const x2 = center + radius * Math.cos(endAngle), y2 = center + radius * Math.sin(endAngle);
                 const largeArcFlag = percent > 0.5 ? 1 : 0;
                 const pathData = `M ${center} ${center} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
                 const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -523,10 +495,7 @@
 
         function renderLineChart(data, container) {
             container.innerHTML = '';
-            if (!data || data.length < 2) {
-                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Недостаточно данных</p>';
-                return;
-            }
+            if (!data || data.length < 2) { container.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Недостаточно данных</p>'; return; }
             const width = container.clientWidth || 300;
             const height = 200, padding = 20;
             const maxValue = Math.max(...data.map(d => d.value)) * 1.1;
@@ -561,47 +530,33 @@
             container.appendChild(svg);
         }
 
-        // ===== АНИМАЦИИ =====
         function playTransition(callback) {
             const overlay = document.getElementById('transitionOverlay');
             overlay.classList.add('active');
             setTimeout(() => {
                 callback();
-                requestAnimationFrame(() => {
-                    setTimeout(() => { overlay.classList.remove('active'); }, 50);
-                });
-            }, 300);
+                requestAnimationFrame(() => { setTimeout(() => { overlay.classList.remove('active'); }, 50); });
+            }, 600);
         }
 
-        // ===== ИНСАЙТЫ =====
         function generateInsights(transactions) {
             const insights = [];
             const now = new Date();
             const currentMonth = now.getMonth(), currentYear = now.getFullYear();
-            const monthTransactions = transactions.filter(t => {
-                const d = new Date(t.date);
-                return d.getMonth() === currentMonth && d.getFullYear() === currentYear && t.type === 'expense';
-            });
+            const monthTransactions = transactions.filter(t => { const d = new Date(t.date); return d.getMonth() === currentMonth && d.getFullYear() === currentYear && t.type === 'expense'; });
             if (monthTransactions.length === 0) return insights;
             const categoryTotals = {};
             monthTransactions.forEach(t => { categoryTotals[t.category] = (categoryTotals[t.category] || 0) + t.amount; });
             const topCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0];
-            if (topCategory) {
-                insights.push({ title: "Главная статья расходов", text: `В этом месяце вы больше всего потратили на "${topCategory[0]}": ${topCategory[1].toLocaleString()} ₽.` });
-            }
+            if (topCategory) insights.push({ title: "Главная статья расходов", text: `В этом месяце вы больше всего потратили на "${topCategory[0]}": ${topCategory[1].toLocaleString()} ₽.` });
             const smallCafeExpenses = monthTransactions.filter(t => (t.category === 'cafe' || t.category === 'entertainment') && t.amount < 500);
-            if (smallCafeExpenses.length >= 5) {
-                insights.push({ title: "Импульсивные траты", text: `${smallCafeExpenses.length} мелких покупок в кафе/развлечениях. Попробуйте правило "24 часов".` });
-            }
+            if (smallCafeExpenses.length >= 5) insights.push({ title: "Импульсивные траты", text: `${smallCafeExpenses.length} мелких покупок в кафе/развлечениях. Попробуйте правило "24 часов".` });
             const totalExpense = monthTransactions.reduce((sum, t) => sum + t.amount, 0);
             const totalIncome = transactions.filter(t => { const d = new Date(t.date); return d.getMonth() === currentMonth && d.getFullYear() === currentYear && t.type === 'income'; }).reduce((sum, t) => sum + t.amount, 0);
-            if (totalIncome > 0 && (totalExpense / totalIncome) < 0.5) {
-                insights.push({ title: "Отличный результат!", text: `Вы потратили менее 50% дохода. Рассмотрите пополнение копилки.` });
-            }
+            if (totalIncome > 0 && (totalExpense / totalIncome) < 0.5) insights.push({ title: "Отличный результат!", text: `Вы потратили менее 50% дохода. Рассмотрите пополнение копилки.` });
             return insights;
         }
 
-        // ===== UI =====
         function showToast(message) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -616,15 +571,8 @@
             select.innerHTML = '';
             const type = document.getElementById('type').value;
             const data = getData();
-            const filtered = type === 'income'
-                ? data.categories.filter(c => ['salary', 'freelance', 'cashback', 'other'].includes(c.id))
-                : data.categories.filter(c => !['salary', 'freelance', 'cashback'].includes(c.id));
-            filtered.forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat.id;
-                option.textContent = `${cat.icon} ${cat.name}`;
-                select.appendChild(option);
-            });
+            const filtered = type === 'income' ? data.categories.filter(c => ['salary', 'freelance', 'cashback', 'other'].includes(c.id)) : data.categories.filter(c => !['salary', 'freelance', 'cashback'].includes(c.id));
+            filtered.forEach(cat => { const option = document.createElement('option'); option.value = cat.id; option.textContent = `${cat.icon} ${cat.name}`; select.appendChild(option); });
         }
 
         function getRandomColor(seed) {
@@ -658,30 +606,18 @@
                 </div>
                 <div class="card">
                     <h3 style="margin-bottom: 1rem;">💡 Финансовое здоровье</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-                        Дневной лимит: <strong style="color: ${isLimitExceeded ? '#e74c3c' : 'var(--accent)'}">${dailyLimit} ${data.settings.currency}</strong>
-                    </p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Дневной лимит: <strong style="color: ${isLimitExceeded ? '#e74c3c' : 'var(--accent)'}">${dailyLimit} ${data.settings.currency}</strong></p>
                     <p style="font-size: 0.85rem; color: var(--text-secondary);">${isLimitExceeded ? '⚠️ Вы превысили бюджет!' : '✅ Вы укладываетесь в бюджет.'}</p>
                 </div>
             `;
             if (insights.length > 0) {
                 html += `<h3 style="margin: 1.5rem 0 1rem;">Наблюдения</h3>`;
-                insights.forEach(insight => {
-                    html += `<div class="insight-card"><h3>${insight.title}</h3><p>${insight.text}</p></div>`;
-                });
+                insights.forEach(insight => { html += `<div class="insight-card"><h3>${insight.title}</h3><p>${insight.text}</p></div>`; });
             }
             html += `<h3 style="margin: 1.5rem 0 1rem;">Последние операции</h3><div class="transaction-list">`;
             data.transactions.slice(0, 5).forEach(t => {
                 const cat = data.categories.find(c => c.id === t.category) || { icon: '📦', name: 'Прочее' };
-                html += `
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <h4>${cat.icon} ${t.description}</h4>
-                            <p>${new Date(t.date).toLocaleDateString('ru-RU')} • ${cat.name}</p>
-                        </div>
-                        <div class="transaction-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()} ${data.settings.currency}</div>
-                    </div>
-                `;
+                html += `<div class="transaction-item"><div class="transaction-info"><h4>${cat.icon} ${t.description}</h4><p>${new Date(t.date).toLocaleDateString('ru-RU')} • ${cat.name}</p></div><div class="transaction-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()} ${data.settings.currency}</div></div>`;
             });
             html += `</div>`;
             container.innerHTML = html;
@@ -693,10 +629,7 @@
             const monthTransactions = data.transactions.filter(t => { const d = new Date(t.date); return d.getMonth() === now.getMonth() && t.type === 'expense'; });
             const categoryTotals = {};
             monthTransactions.forEach(t => { categoryTotals[t.category] = (categoryTotals[t.category] || 0) + t.amount; });
-            const chartData = Object.entries(categoryTotals).map(([catId, value]) => {
-                const cat = data.categories.find(c => c.id === catId) || { name: 'Прочее' };
-                return { label: cat.name, value, color: getRandomColor(catId) };
-            }).sort((a, b) => b.value - a.value);
+            const chartData = Object.entries(categoryTotals).map(([catId, value]) => { const cat = data.categories.find(c => c.id === catId) || { name: 'Прочее' }; return { label: cat.name, value, color: getRandomColor(catId) }; }).sort((a, b) => b.value - a.value);
             const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
             const lineData = [];
             for (let i = 1; i <= daysInMonth; i++) {
@@ -704,226 +637,63 @@
                 const dayTotal = monthTransactions.filter(t => t.date === dateStr).reduce((sum, t) => sum + t.amount, 0);
                 lineData.push({ label: `${i} число`, value: dayTotal });
             }
-            container.innerHTML = `
-                <h2 style="margin-bottom: 1.5rem;">Статистика за месяц</h2>
-                <div class="stats-grid">
-                    <div class="card stat-card"><div class="stat-value">${monthTransactions.reduce((sum, t) => sum + t.amount, 0).toLocaleString()} ${data.settings.currency}</div><div class="stat-label">Всего потрачено</div></div>
-                    <div class="card stat-card"><div class="stat-value">${monthTransactions.length}</div><div class="stat-label">Операций</div></div>
-                </div>
-                <div class="card"><h3 style="margin-bottom: 1rem;">По категориям</h3><div class="chart-container" id="pieChartContainer"></div></div>
-                <div class="card"><h3 style="margin-bottom: 1rem;">Динамика по дням</h3><div class="chart-container" id="lineChartContainer"></div></div>
-            `;
-            setTimeout(() => {
-                renderPieChart(chartData, document.getElementById('pieChartContainer'));
-                renderLineChart(lineData, document.getElementById('lineChartContainer'));
-            }, 50);
+            container.innerHTML = `<h2 style="margin-bottom: 1.5rem;">Статистика за месяц</h2><div class="stats-grid"><div class="card stat-card"><div class="stat-value">${monthTransactions.reduce((sum, t) => sum + t.amount, 0).toLocaleString()} ${data.settings.currency}</div><div class="stat-label">Всего потрачено</div></div><div class="card stat-card"><div class="stat-value">${monthTransactions.length}</div><div class="stat-label">Операций</div></div></div><div class="card"><h3 style="margin-bottom: 1rem;">По категориям</h3><div class="chart-container" id="pieChartContainer"></div></div><div class="card"><h3 style="margin-bottom: 1rem;">Динамика по дням</h3><div class="chart-container" id="lineChartContainer"></div></div>`;
+            setTimeout(() => { renderPieChart(chartData, document.getElementById('pieChartContainer')); renderLineChart(lineData, document.getElementById('lineChartContainer')); }, 50);
         }
 
         function renderDebts(container) {
             const data = getData();
-            let html = `
-                <h2 style="margin-bottom: 1.5rem;">Долги</h2>
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Добавить долг</h3>
-                    <form id="debtForm" style="display: grid; gap: 1rem;">
-                        <input type="text" id="debtPerson" placeholder="Кто/Кому" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                        <input type="number" id="debtAmount" placeholder="Сумма" required step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                        <select id="debtType" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                            <option value="owe">Я должен</option>
-                            <option value="owed">Мне должны</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary">Добавить</button>
-                    </form>
-                </div>
-                <h3 style="margin: 1.5rem 0 1rem;">Список</h3>
-            `;
-            if (data.debts.length === 0) {
-                html += `<p style="color: var(--text-secondary); text-align: center;">Долгов нет!</p>`;
-            } else {
+            let html = `<h2 style="margin-bottom: 1.5rem;">Долги</h2><div class="card"><h3 style="margin-bottom: 1rem;">Добавить долг</h3><form id="debtForm" style="display: grid; gap: 1rem;"><input type="text" id="debtPerson" placeholder="Кто/Кому" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><input type="number" id="debtAmount" placeholder="Сумма" required step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><select id="debtType" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><option value="owe">Я должен</option><option value="owed">Мне должны</option></select><button type="submit" class="btn btn-primary">Добавить</button></form></div><h3 style="margin: 1.5rem 0 1rem;">Список</h3>`;
+            if (data.debts.length === 0) { html += `<p style="color: var(--text-secondary); text-align: center;">Долгов нет!</p>`; }
+            else {
                 data.debts.forEach(debt => {
                     const isOwe = debt.type === 'owe';
                     const remaining = debt.amount - (debt.paid || 0);
                     const percent = (debt.paid / debt.amount) * 100;
-                    html += `
-                        <div class="debt-item">
-                            <div style="flex: 1;">
-                                <h4 style="color: ${isOwe ? 'var(--burnt-sienna)' : '#27ae60'}">${isOwe ? 'Я должен' : 'Мне должны'}: ${debt.person}</h4>
-                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.25rem 0;">Осталось: ${remaining.toLocaleString()} из ${debt.amount.toLocaleString()}</p>
-                                <div class="progress-bar"><div class="progress-fill" style="width: ${percent}%; background: ${isOwe ? 'var(--burnt-sienna)' : '#27ae60'}"></div></div>
-                            </div>
-                            <div class="debt-actions">
-                                ${remaining > 0 ? `<button class="btn btn-secondary pay-debt-btn" data-id="${debt.id}" data-amount="${remaining}" style="padding: 0.5rem;">Оплатить</button>` : ''}
-                                <button class="btn btn-danger delete-debt-btn" data-id="${debt.id}" style="padding: 0.5rem;">&times;</button>
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="debt-item"><div style="flex: 1;"><h4 style="color: ${isOwe ? 'var(--burnt-sienna)' : '#27ae60'}">${isOwe ? 'Я должен' : 'Мне должны'}: ${debt.person}</h4><p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.25rem 0;">Осталось: ${remaining.toLocaleString()} из ${debt.amount.toLocaleString()}</p><div class="progress-bar"><div class="progress-fill" style="width: ${percent}%; background: ${isOwe ? 'var(--burnt-sienna)' : '#27ae60'}"></div></div></div><div class="debt-actions">${remaining > 0 ? `<button class="btn btn-secondary pay-debt-btn" data-id="${debt.id}" data-amount="${remaining}" style="padding: 0.5rem;">Оплатить</button>` : ''}<button class="btn btn-danger delete-debt-btn" data-id="${debt.id}" style="padding: 0.5rem;">&times;</button></div></div>`;
                 });
             }
             container.innerHTML = html;
-            document.getElementById('debtForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                addDebt({ person: document.getElementById('debtPerson').value, amount: parseFloat(document.getElementById('debtAmount').value), type: document.getElementById('debtType').value });
-                showToast('Долг добавлен');
-                handleRouteChange();
-            });
-            container.querySelectorAll('.pay-debt-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.dataset.id, amount = parseFloat(btn.dataset.amount);
-                    const pay = prompt(`Сумма оплаты (макс. ${amount}):`, amount);
-                    if (pay && !isNaN(pay)) { updateDebtPayment(id, parseFloat(pay)); showToast('Платёж учтён'); handleRouteChange(); }
-                });
-            });
-            container.querySelectorAll('.delete-debt-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (confirm('Удалить запись?')) { deleteDebt(btn.dataset.id); showToast('Удалено'); handleRouteChange(); }
-                });
-            });
+            document.getElementById('debtForm').addEventListener('submit', (e) => { e.preventDefault(); addDebt({ person: document.getElementById('debtPerson').value, amount: parseFloat(document.getElementById('debtAmount').value), type: document.getElementById('debtType').value }); showToast('Долг добавлен'); handleRouteChange(); });
+            container.querySelectorAll('.pay-debt-btn').forEach(btn => { btn.addEventListener('click', () => { const id = btn.dataset.id, amount = parseFloat(btn.dataset.amount); const pay = prompt(`Сумма оплаты (макс. ${amount}):`, amount); if (pay && !isNaN(pay)) { updateDebtPayment(id, parseFloat(pay)); showToast('Платёж учтён'); handleRouteChange(); } }); });
+            container.querySelectorAll('.delete-debt-btn').forEach(btn => { btn.addEventListener('click', () => { if (confirm('Удалить запись?')) { deleteDebt(btn.dataset.id); showToast('Удалено'); handleRouteChange(); } }); });
         }
 
         function renderSettings(container) {
             const data = getData();
-            container.innerHTML = `
-                <h2 style="margin-bottom: 1.5rem;">Настройки</h2>
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Параметры</h3>
-                    <div class="form-group">
-                        <label>Ежемесячный бюджет</label>
-                        <input type="number" id="budgetInput" value="${data.settings.monthlyBudget}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                    </div>
-                    <button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button>
-                </div>
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Данные</h3>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <button class="btn btn-secondary" id="exportBtn">Экспорт JSON</button>
-                        <label class="btn btn-secondary" style="cursor: pointer; display: inline-block;">Импорт JSON<input type="file" id="importFile" accept=".json" style="display: none;"></label>
-                    </div>
-                </div>
-                <div class="card" style="border: 1px solid #e74c3c;">
-                    <h3 style="margin-bottom: 1rem; color: #e74c3c;">Опасная зона</h3>
-                    <button class="btn btn-danger" id="clearAllBtn">Очистить всё</button>
-                </div>
-            `;
-            document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-                const budget = parseFloat(document.getElementById('budgetInput').value);
-                if (!isNaN(budget)) { updateSetting('monthlyBudget', budget); showToast('Сохранено'); }
-            });
+            container.innerHTML = `<h2 style="margin-bottom: 1.5rem;">Настройки</h2><div class="card"><h3 style="margin-bottom: 1rem;">Параметры</h3><div class="form-group"><label>Ежемесячный бюджет</label><input type="number" id="budgetInput" value="${data.settings.monthlyBudget}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"></div><button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button></div><div class="card"><h3 style="margin-bottom: 1rem;">Данные</h3><div style="display: flex; gap: 1rem; flex-wrap: wrap;"><button class="btn btn-secondary" id="exportBtn">Экспорт JSON</button><label class="btn btn-secondary" style="cursor: pointer; display: inline-block;">Импорт JSON<input type="file" id="importFile" accept=".json" style="display: none;"></label></div></div><div class="card" style="border: 1px solid #e74c3c;"><h3 style="margin-bottom: 1rem; color: #e74c3c;">Опасная зона</h3><button class="btn btn-danger" id="clearAllBtn">Очистить всё</button></div>`;
+            document.getElementById('saveSettingsBtn').addEventListener('click', () => { const budget = parseFloat(document.getElementById('budgetInput').value); if (!isNaN(budget)) { updateSetting('monthlyBudget', budget); showToast('Сохранено'); } });
             document.getElementById('exportBtn').addEventListener('click', exportData);
-            document.getElementById('importFile').addEventListener('change', (e) => {
-                const file = e.target.files[0]; if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    if (importData(event.target.result)) { showToast('Импортировано'); handleRouteChange(); }
-                    else alert('Ошибка формата');
-                };
-                reader.readAsText(file);
-            });
-            document.getElementById('clearAllBtn').addEventListener('click', () => {
-                if (confirm('Удалить ВСЕ данные?')) { localStorage.removeItem('fintrack_data'); showToast('Очищено'); setTimeout(() => location.reload(), 1000); }
-            });
+            document.getElementById('importFile').addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (event) => { if (importData(event.target.result)) { showToast('Импортировано'); handleRouteChange(); } else alert('Ошибка формата'); }; reader.readAsText(file); });
+            document.getElementById('clearAllBtn').addEventListener('click', () => { if (confirm('Удалить ВСЕ данные?')) { localStorage.removeItem('fintrack_data'); showToast('Очищено'); setTimeout(() => location.reload(), 1000); } });
         }
 
         function renderGoals(container) {
             const data = getData();
-            let html = `
-                <h2 style="margin-bottom: 1.5rem;">Копилки</h2>
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Новая цель</h3>
-                    <form id="goalForm" style="display: grid; gap: 1rem;">
-                        <input type="text" id="goalName" placeholder="Название" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                        <input type="number" id="goalTarget" placeholder="Сумма" required step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                        <button type="submit" class="btn btn-primary">Создать</button>
-                    </form>
-                </div>
-                <h3 style="margin: 1.5rem 0 1rem;">Мои цели</h3>
-            `;
-            if (data.goals.length === 0) {
-                html += `<p style="color: var(--text-secondary); text-align: center;">Целей нет</p>`;
-            } else {
+            let html = `<h2 style="margin-bottom: 1.5rem;">Копилки</h2><div class="card"><h3 style="margin-bottom: 1rem;">Новая цель</h3><form id="goalForm" style="display: grid; gap: 1rem;"><input type="text" id="goalName" placeholder="Название" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><input type="number" id="goalTarget" placeholder="Сумма" required step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><button type="submit" class="btn btn-primary">Создать</button></form></div><h3 style="margin: 1.5rem 0 1rem;">Мои цели</h3>`;
+            if (data.goals.length === 0) { html += `<p style="color: var(--text-secondary); text-align: center;">Целей нет</p>`; }
+            else {
                 data.goals.forEach(goal => {
                     const percent = Math.min((goal.saved / goal.target) * 100, 100);
-                    html += `
-                        <div class="card">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <h4>${goal.name}</h4>
-                                <button class="btn btn-danger delete-goal-btn" data-id="${goal.id}" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Удалить</button>
-                            </div>
-                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Сохранено: ${goal.saved.toLocaleString()} из ${goal.target.toLocaleString()} ${data.settings.currency}</p>
-                            <div class="progress-bar"><div class="progress-fill" style="width: ${percent}%"></div></div>
-                            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                                <input type="number" class="save-amount-input" data-id="${goal.id}" placeholder="Сумма" style="flex: 1; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                                <button class="btn btn-secondary save-goal-btn" data-id="${goal.id}">Пополнить</button>
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="card"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;"><h4>${goal.name}</h4><button class="btn btn-danger delete-goal-btn" data-id="${goal.id}" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Удалить</button></div><p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Сохранено: ${goal.saved.toLocaleString()} из ${goal.target.toLocaleString()} ${data.settings.currency}</p><div class="progress-bar"><div class="progress-fill" style="width: ${percent}%"></div></div><div style="margin-top: 1rem; display: flex; gap: 0.5rem;"><input type="number" class="save-amount-input" data-id="${goal.id}" placeholder="Сумма" style="flex: 1; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><button class="btn btn-secondary save-goal-btn" data-id="${goal.id}">Пополнить</button></div></div>`;
                 });
             }
             container.innerHTML = html;
-            document.getElementById('goalForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                addGoal({ name: document.getElementById('goalName').value, target: parseFloat(document.getElementById('goalTarget').value) });
-                showToast('Цель создана');
-                renderGoals(container);
-            });
-            container.querySelectorAll('.save-goal-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.dataset.id;
-                    const input = container.querySelector(`.save-amount-input[data-id="${id}"]`);
-                    const amount = parseFloat(input.value);
-                    if (amount && amount > 0) { updateGoalSaving(id, amount); showToast('Пополнено'); handleRouteChange(); }
-                });
-            });
-            container.querySelectorAll('.delete-goal-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (confirm('Удалить цель?')) { deleteGoal(btn.dataset.id); showToast('Удалено'); handleRouteChange(); }
-                });
-            });
+            document.getElementById('goalForm').addEventListener('submit', (e) => { e.preventDefault(); addGoal({ name: document.getElementById('goalName').value, target: parseFloat(document.getElementById('goalTarget').value) }); showToast('Цель создана'); renderGoals(container); });
+            container.querySelectorAll('.save-goal-btn').forEach(btn => { btn.addEventListener('click', () => { const id = btn.dataset.id; const input = container.querySelector(`.save-amount-input[data-id="${id}"]`); const amount = parseFloat(input.value); if (amount && amount > 0) { updateGoalSaving(id, amount); showToast('Пополнено'); handleRouteChange(); } }); });
+            container.querySelectorAll('.delete-goal-btn').forEach(btn => { btn.addEventListener('click', () => { if (confirm('Удалить цель?')) { deleteGoal(btn.dataset.id); showToast('Удалено'); handleRouteChange(); } }); });
         }
 
         function renderTimeline(container) {
             const data = getData();
             const balance = data.transactions.reduce((acc, t) => acc + (t.type === 'income' ? t.amount : -t.amount), 0);
             const subsTotal = data.subscriptions.reduce((acc, s) => acc + s.amount, 0);
-            let html = `
-                <h2 style="margin-bottom: 1.5rem;">Таймлайн</h2>
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Ближайшие 30 дней</h3>
-                    <div class="timeline-item"><div><h4>Сегодня</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">Баланс: ${balance.toLocaleString()} ${data.settings.currency}</p></div></div>
-                    <div class="timeline-item"><div><h4>Через неделю</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">Подписки: ~${subsTotal.toLocaleString()} ${data.settings.currency}</p></div></div>
-                    <div class="timeline-item"><div><h4>Через месяц</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">Бюджет: ${data.settings.monthlyBudget.toLocaleString()} ${data.settings.currency}</p></div></div>
-                </div>
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Подписки</h3>
-                    <form id="subForm" style="display: grid; gap: 1rem; margin-bottom: 1rem;">
-                        <input type="text" id="subName" placeholder="Название" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                        <input type="number" id="subAmount" placeholder="Сумма" required step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);">
-                        <button type="submit" class="btn btn-primary">Добавить</button>
-                    </form>
-                    <div id="subList">
-                        ${data.subscriptions.map(sub => `
-                            <div class="debt-item">
-                                <div><h4>${sub.name}</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">${sub.amount.toLocaleString()} ${data.settings.currency} / мес</p></div>
-                                <button class="btn btn-danger delete-sub-btn" data-id="${sub.id}" style="padding: 0.5rem;">&times;</button>
-                            </div>
-                        `).join('') || '<p style="color: var(--text-secondary);">Нет подписок</p>'}
-                    </div>
-                </div>
-            `;
+            let html = `<h2 style="margin-bottom: 1.5rem;">Таймлайн</h2><div class="card"><h3 style="margin-bottom: 1rem;">Ближайшие 30 дней</h3><div class="timeline-item"><div><h4>Сегодня</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">Баланс: ${balance.toLocaleString()} ${data.settings.currency}</p></div></div><div class="timeline-item"><div><h4>Через неделю</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">Подписки: ~${subsTotal.toLocaleString()} ${data.settings.currency}</p></div></div><div class="timeline-item"><div><h4>Через месяц</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">Бюджет: ${data.settings.monthlyBudget.toLocaleString()} ${data.settings.currency}</p></div></div></div><div class="card"><h3 style="margin-bottom: 1rem;">Подписки</h3><form id="subForm" style="display: grid; gap: 1rem; margin-bottom: 1rem;"><input type="text" id="subName" placeholder="Название" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><input type="number" id="subAmount" placeholder="Сумма" required step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><button type="submit" class="btn btn-primary">Добавить</button></form><div id="subList">${data.subscriptions.map(sub => `<div class="debt-item"><div><h4>${sub.name}</h4><p style="font-size: 0.85rem; color: var(--text-secondary);">${sub.amount.toLocaleString()} ${data.settings.currency} / мес</p></div><button class="btn btn-danger delete-sub-btn" data-id="${sub.id}" style="padding: 0.5rem;">&times;</button></div>`).join('') || '<p style="color: var(--text-secondary);">Нет подписок</p>'}</div></div>`;
             container.innerHTML = html;
-            document.getElementById('subForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                addSubscription({ name: document.getElementById('subName').value, amount: parseFloat(document.getElementById('subAmount').value) });
-                showToast('Подписка добавлена');
-                renderTimeline(container);
-            });
-            container.querySelectorAll('.delete-sub-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (confirm('Удалить подписку?')) { deleteSubscription(btn.dataset.id); showToast('Удалено'); handleRouteChange(); }
-                });
-            });
+            document.getElementById('subForm').addEventListener('submit', (e) => { e.preventDefault(); addSubscription({ name: document.getElementById('subName').value, amount: parseFloat(document.getElementById('subAmount').value) }); showToast('Подписка добавлена'); renderTimeline(container); });
+            container.querySelectorAll('.delete-sub-btn').forEach(btn => { btn.addEventListener('click', () => { if (confirm('Удалить подписку?')) { deleteSubscription(btn.dataset.id); showToast('Удалено'); handleRouteChange(); } }); });
         }
 
-        // ===== РОУТЕР =====
         const routes = { '/wallet': renderWallet, '/stats': renderStats, '/debts': renderDebts, '/goals': renderGoals, '/timeline': renderTimeline, '/settings': renderSettings };
 
         function handleRouteChange() { window.dispatchEvent(new HashChangeEvent('hashchange')); }
@@ -932,8 +702,8 @@
         function handleRoute() {
             const hash = window.location.hash.slice(1) || '/wallet';
             const route = routes[hash] || routes['/wallet'];
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            const activeNav = document.querySelector(`.nav-item[data-route="${hash}"]`);
+            document.querySelectorAll('.nav-item, .nav-link').forEach(el => el.classList.remove('active'));
+            const activeNav = document.querySelector(`[data-route="${hash}"]`);
             if (activeNav) activeNav.classList.add('active');
             playTransition(() => {
                 const main = document.getElementById('mainContent');
@@ -943,62 +713,26 @@
             });
         }
 
-        function initRouter() {
-            window.addEventListener('hashchange', handleRoute);
-            handleRoute();
-        }
+        function initRouter() { window.addEventListener('hashchange', handleRoute); handleRoute(); }
 
-        // ===== НАСТРОЙКА СОБЫТИЙ =====
         function setupEventListeners() {
-            document.getElementById('themeToggle').addEventListener('click', () => {
-                const current = getData().settings.theme;
-                updateSetting('theme', current === 'light' ? 'dark' : 'light');
-            });
+            document.getElementById('themeToggle').addEventListener('click', () => { const current = getData().settings.theme; updateSetting('theme', current === 'light' ? 'dark' : 'light'); });
             const modal = document.getElementById('transactionModal');
-            document.getElementById('addTransactionBtn').addEventListener('click', () => {
-                modal.classList.add('active');
-                document.getElementById('date').valueAsDate = new Date();
-                populateCategories();
-            });
+            const openModal = () => { modal.classList.add('active'); document.getElementById('date').valueAsDate = new Date(); populateCategories(); };
+            document.getElementById('addTransactionBtn').addEventListener('click', openModal);
+            document.getElementById('addTransactionBtnDesktop').addEventListener('click', openModal);
             document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('active'));
             modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
             const voiceBtn = document.getElementById('voiceInput');
             const descInput = document.getElementById('description');
-            const startVoice = initVoiceInput(descInput, (text) => {
-                const parsed = parseTransactionText(text);
-                if (parsed.amount) document.getElementById('amount').value = parsed.amount;
-                if (parsed.category) document.getElementById('category').value = parsed.category;
-                document.getElementById('type').value = parsed.type;
-            });
+            const startVoice = initVoiceInput(descInput, (text) => { const parsed = parseTransactionText(text); if (parsed.amount) document.getElementById('amount').value = parsed.amount; if (parsed.category) document.getElementById('category').value = parsed.category; document.getElementById('type').value = parsed.type; });
             voiceBtn.addEventListener('click', startVoice);
-            descInput.addEventListener('blur', () => {
-                const parsed = parseTransactionText(descInput.value);
-                if (parsed.amount && !document.getElementById('amount').value) document.getElementById('amount').value = parsed.amount;
-                if (parsed.category) document.getElementById('category').value = parsed.category;
-            });
-            document.getElementById('transactionForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                addTransaction({
-                    amount: parseFloat(document.getElementById('amount').value),
-                    description: document.getElementById('description').value || 'Без описания',
-                    category: document.getElementById('category').value,
-                    date: document.getElementById('date').value,
-                    type: document.getElementById('type').value
-                });
-                modal.classList.remove('active');
-                e.target.reset();
-                showToast('Сохранено');
-                handleRouteChange();
-            });
+            descInput.addEventListener('blur', () => { const parsed = parseTransactionText(descInput.value); if (parsed.amount && !document.getElementById('amount').value) document.getElementById('amount').value = parsed.amount; if (parsed.category) document.getElementById('category').value = parsed.category; });
+            document.getElementById('transactionForm').addEventListener('submit', (e) => { e.preventDefault(); addTransaction({ amount: parseFloat(document.getElementById('amount').value), description: document.getElementById('description').value || 'Без описания', category: document.getElementById('category').value, date: document.getElementById('date').value, type: document.getElementById('type').value }); modal.classList.remove('active'); e.target.reset(); showToast('Сохранено'); handleRouteChange(); });
             document.getElementById('type').addEventListener('change', populateCategories);
         }
 
-        // ===== ЗАПУСК =====
-        document.addEventListener('DOMContentLoaded', () => {
-            initData();
-            setupEventListeners();
-            initRouter();
-        });
+        document.addEventListener('DOMContentLoaded', () => { initData(); setupEventListeners(); initRouter(); });
     </script>
 </body>
 </html>
