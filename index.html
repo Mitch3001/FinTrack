@@ -185,10 +185,77 @@
         .timeline-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-left: 3px solid var(--accent); margin-left: 1rem; position: relative; }
         .timeline-item::before { content: ''; position: absolute; left: -7.5px; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; }
         .hidden { display: none !important; }
+        .goal-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            border-left: 4px solid var(--accent);
+        }
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .goal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        .goal-category {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .goal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: 12px;
+        }
+        .goal-stat {
+            text-align: center;
+        }
+        .goal-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .goal-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        .optimal-plan {
+            background: linear-gradient(135deg, rgba(189, 95, 60, 0.1), rgba(214, 122, 83, 0.1));
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .optimal-plan h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+        .optimal-plan p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .btn-calculate {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
         @media (max-width: 768px) {
             .content-wrapper { padding: 1rem 1rem 100px; }
             .stats-grid { grid-template-columns: 1fr; }
             .nav-links { display: none; }
+            .goal-stats { grid-template-columns: 1fr; }
         }
         @media (min-width: 769px) {
             .bottom-nav { display: none; }
@@ -219,7 +286,7 @@
                 <a href="#/wallet" class="nav-link" data-route="/wallet">Кошелёк</a>
                 <a href="#/stats" class="nav-link" data-route="/stats">Статистика</a>
                 <a href="#/debts" class="nav-link" data-route="/debts">Долги</a>
-                <a href="#/goals" class="nav-link" data-route="/goals">Копилки</a>
+                <a href="#/goals" class="nav-link" data-route="/goals">Цели</a>
                 <a href="#/timeline" class="nav-link" data-route="/timeline">Таймлайн</a>
                 <a href="#/settings" class="nav-link" data-route="/settings">Настройки</a>
                 <button class="nav-link add-link" id="addTransactionBtnDesktop" aria-label="Добавить транзакцию">
@@ -311,8 +378,8 @@
                 { id: 'clothes', name: 'Одежда', icon: '👕' },
                 { id: 'entertainment', name: 'Развлечения', icon: '🎬' },
                 { id: 'subscriptions', name: 'Подписки', icon: '📱' },
-                { id: 'education', name: 'Образование', icon: '📚' },
-                { id: 'gifts', name: 'Подарки', icon: '🎁' },
+                { id: 'education', name: 'Образование', icon: '' },
+                { id: 'gifts', name: 'Подарки', icon: '' },
                 { id: 'tech', name: 'Техника', icon: '💻' },
                 { id: 'beauty', name: 'Красота', icon: '💅' },
                 { id: 'pets', name: 'Животные', icon: '🐾' },
@@ -321,7 +388,7 @@
                 { id: 'kids', name: 'Дети', icon: '🧸' },
                 { id: 'car', name: 'Автомобиль', icon: '🚗' },
                 { id: 'internet', name: 'Интернет и связь', icon: '📶' },
-                { id: 'taxes', name: 'Налоги и сборы', icon: '🏛️' },
+                { id: 'taxes', name: 'Налоги и сборы', icon: '️' },
                 { id: 'investments', name: 'Инвестиции', icon: '📈' },
                 { id: 'debt_payment', name: 'Погашение долгов', icon: '💳' },
                 { id: 'salary', name: 'Зарплата', icon: '💰' },
@@ -364,9 +431,80 @@
         function addDebt(debt) { debt.id = Date.now().toString(36); debt.paid = 0; appData.debts.push(debt); saveData(); }
         function updateDebtPayment(id, amount) { const debt = appData.debts.find(d => d.id === id); if (debt) { debt.paid = Math.min(debt.paid + amount, debt.amount); saveData(); } }
         function deleteDebt(id) { appData.debts = appData.debts.filter(d => d.id !== id); saveData(); }
-        function addGoal(goal) { goal.id = Date.now().toString(36); goal.saved = 0; appData.goals.push(goal); saveData(); }
-        function updateGoalSaving(id, amount) { const goal = appData.goals.find(g => g.id === id); if (goal) { goal.saved = Math.min(goal.saved + amount, goal.target); saveData(); } }
-        function deleteGoal(id) { appData.goals = appData.goals.filter(g => g.id !== id); saveData(); }
+        
+        function addGoal(goal) {
+            goal.id = Date.now().toString(36);
+            goal.saved = 0;
+            goal.createdAt = new Date().toISOString();
+            appData.goals.push(goal);
+            saveData();
+        }
+        
+        function updateGoalSaving(id, amount) {
+            const goal = appData.goals.find(g => g.id === id);
+            if (goal) {
+                goal.saved = Math.min(goal.saved + amount, goal.target);
+                saveData();
+            }
+        }
+        
+        function deleteGoal(id) {
+            appData.goals = appData.goals.filter(g => g.id !== id);
+            saveData();
+        }
+        
+        function calculateOptimalPlan(targetAmount, userDeadline) {
+            const now = new Date();
+            const transactions = appData.transactions;
+            
+            // Анализируем доходы и расходы за последние 3 месяца
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            
+            const recentTransactions = transactions.filter(t => {
+                const date = new Date(t.date);
+                return date >= threeMonthsAgo;
+            });
+            
+            const totalIncome = recentTransactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const totalExpense = recentTransactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const months = 3;
+            const avgMonthlyIncome = totalIncome / months;
+            const avgMonthlyExpense = totalExpense / months;
+            const avgMonthlySavings = avgMonthlyIncome - avgMonthlyExpense;
+            
+            // Рассчитываем оптимальный срок
+            const optimalMonths = Math.ceil(targetAmount / (avgMonthlySavings || 1));
+            const optimalDate = new Date();
+            optimalDate.setMonth(optimalDate.getMonth() + optimalMonths);
+            
+            // Ежемесячный платёж
+            const monthlyPayment = Math.ceil(targetAmount / optimalMonths);
+            
+            // Еженедельный платёж
+            const weeklyPayment = Math.ceil(monthlyPayment / 4.33);
+            
+            // Ежедневный платёж
+            const dailyPayment = Math.ceil(monthlyPayment / 30);
+            
+            return {
+                optimalMonths,
+                optimalDate: optimalDate.toLocaleDateString('ru-RU'),
+                monthlyPayment,
+                weeklyPayment,
+                dailyPayment,
+                avgMonthlySavings: Math.round(avgMonthlySavings),
+                userDeadline,
+                isRealistic: optimalMonths <= new Date(userDeadline).getTime() / (1000 * 60 * 60 * 24 * 30)
+            };
+        }
+
         function addSubscription(sub) { sub.id = Date.now().toString(36); appData.subscriptions.push(sub); saveData(); }
         function deleteSubscription(id) { appData.subscriptions = appData.subscriptions.filter(s => s.id !== id); saveData(); }
 
@@ -616,7 +754,7 @@
             }
             html += `<h3 style="margin: 1.5rem 0 1rem;">Последние операции</h3><div class="transaction-list">`;
             data.transactions.slice(0, 5).forEach(t => {
-                const cat = data.categories.find(c => c.id === t.category) || { icon: '📦', name: 'Прочее' };
+                const cat = data.categories.find(c => c.id === t.category) || { icon: '', name: 'Прочее' };
                 html += `<div class="transaction-item"><div class="transaction-info"><h4>${cat.icon} ${t.description}</h4><p>${new Date(t.date).toLocaleDateString('ru-RU')} • ${cat.name}</p></div><div class="transaction-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()} ${data.settings.currency}</div></div>`;
             });
             html += `</div>`;
@@ -659,6 +797,189 @@
             container.querySelectorAll('.delete-debt-btn').forEach(btn => { btn.addEventListener('click', () => { if (confirm('Удалить запись?')) { deleteDebt(btn.dataset.id); showToast('Удалено'); handleRouteChange(); } }); });
         }
 
+        function renderGoals(container) {
+            const data = getData();
+            let html = `<h2 style="margin-bottom: 1.5rem;">Цели и покупки</h2>
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">🎯 Новая цель</h3>
+                    <form id="goalForm" style="display: grid; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="goalName">Что хотите купить?</label>
+                            <input type="text" id="goalName" placeholder="Например: iPhone 15, ноутбук, отпуск" required style="width: 100%; padding: 0.85rem; border-radius: 8px; border: 2px solid transparent; border-bottom: 2px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; font-size: 1rem;">
+                        </div>
+                        <div class="form-group">
+                            <label for="goalCategory">Категория</label>
+                            <select id="goalCategory" style="width: 100%; padding: 0.85rem; border-radius: 8px; border: 2px solid transparent; border-bottom: 2px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; font-size: 1rem;">
+                                ${data.categories.map(cat => `<option value="${cat.id}">${cat.icon} ${cat.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="goalTarget">Стоимость (₽)</label>
+                            <input type="number" id="goalTarget" placeholder="50000" required step="0.01" min="1" style="width: 100%; padding: 0.85rem; border-radius: 8px; border: 2px solid transparent; border-bottom: 2px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; font-size: 1rem;">
+                        </div>
+                        <div class="form-group">
+                            <label for="goalDeadline">Желаемый срок</label>
+                            <input type="date" id="goalDeadline" required style="width: 100%; padding: 0.85rem; border-radius: 8px; border: 2px solid transparent; border-bottom: 2px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; font-size: 1rem;">
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="calculateOptimalBtn">🧮 Рассчитать оптимальный план</button>
+                        <div id="optimalPlanResult" style="display: none;"></div>
+                        <button type="submit" class="btn btn-primary">Создать цель</button>
+                    </form>
+                </div>
+                <h3 style="margin: 1.5rem 0 1rem;">Мои цели</h3>`;
+            
+            if (data.goals.length === 0) {
+                html += `<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Пока нет целей. Добавьте первую!</p>`;
+            } else {
+                data.goals.forEach(goal => {
+                    const percent = Math.min((goal.saved / goal.target) * 100, 100);
+                    const remaining = goal.target - goal.saved;
+                    const category = data.categories.find(c => c.id === goal.category) || { icon: '🎯', name: 'Цель' };
+                    
+                    html += `
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <div>
+                                    <div class="goal-title">${category.icon} ${goal.name}</div>
+                                    <div class="goal-category">${category.name}</div>
+                                </div>
+                                <button class="btn btn-danger" onclick="window.deleteGoalItem('${goal.id}')" style="padding: 0.5rem; font-size: 0.8rem;">Удалить</button>
+                            </div>
+                            <div class="progress-bar" style="height: 12px; margin: 1rem 0;">
+                                <div class="progress-fill" style="width: ${percent}%"></div>
+                            </div>
+                            <div class="goal-stats">
+                                <div class="goal-stat">
+                                    <div class="goal-stat-value">${goal.saved.toLocaleString()} ₽</div>
+                                    <div class="goal-stat-label">Накоплено</div>
+                                </div>
+                                <div class="goal-stat">
+                                    <div class="goal-stat-value">${remaining.toLocaleString()} ₽</div>
+                                    <div class="goal-stat-label">Осталось</div>
+                                </div>
+                                <div class="goal-stat">
+                                    <div class="goal-stat-value">${Math.round(percent)}%</div>
+                                    <div class="goal-stat-label">Прогресс</div>
+                                </div>
+                            </div>
+                            ${goal.optimalPlan ? `
+                                <div class="optimal-plan">
+                                    <h4> Оптимальный план накопления</h4>
+                                    <p>
+                                         <strong>Ежедневно:</strong> ${goal.optimalPlan.dailyPayment.toLocaleString()} ₽<br>
+                                        📅 <strong>Еженедельно:</strong> ${goal.optimalPlan.weeklyPayment.toLocaleString()} ₽<br>
+                                        📆 <strong>Ежемесячно:</strong> ${goal.optimalPlan.monthlyPayment.toLocaleString()} ₽<br>
+                                        🎯 <strong>Цель будет достигнута:</strong> ${goal.optimalPlan.optimalDate} (${goal.optimalPlan.optimalMonths} мес.)
+                                    </p>
+                                    <p style="margin-top: 0.75rem; font-size: 0.8rem;">
+                                        ${goal.optimalPlan.isRealistic ? '✅ Ваш срок реалистичен!' : '⚠️ Возможно, стоит увеличить срок или сумму накоплений'}
+                                    </p>
+                                </div>
+                            ` : ''}
+                            <div style="margin-top: 1rem; display: flex; gap: 0.75rem;">
+                                <input type="number" class="save-amount-input" data-id="${goal.id}" placeholder="Сумма пополнения" 
+                                    style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 2px solid transparent; border-bottom: 2px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary); font-family: inherit;">
+                                <button class="btn btn-secondary save-goal-btn" data-id="${goal.id}">Пополнить</button>
+                                <button class="btn btn-primary calculate-plan-btn" data-id="${goal.id}">🧮 План</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            container.innerHTML = html;
+            
+            // Обработчик формы создания цели
+            document.getElementById('goalForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('goalName').value;
+                const category = document.getElementById('goalCategory').value;
+                const target = parseFloat(document.getElementById('goalTarget').value);
+                const deadline = document.getElementById('goalDeadline').value;
+                
+                // Проверяем, есть ли рассчитанный план
+                const optimalPlanDiv = document.getElementById('optimalPlanResult');
+                let optimalPlan = null;
+                
+                if (optimalPlanDiv.dataset.plan) {
+                    optimalPlan = JSON.parse(optimalPlanDiv.dataset.plan);
+                }
+                
+                addGoal({ name, category, target, deadline, optimalPlan });
+                showToast('Цель создана!');
+                renderGoals(container);
+            });
+            
+            // Кнопка расчёта оптимального плана
+            document.getElementById('calculateOptimalBtn').addEventListener('click', () => {
+                const target = parseFloat(document.getElementById('goalTarget').value);
+                const deadline = document.getElementById('goalDeadline').value;
+                
+                if (!target || target <= 0) {
+                    alert('Введите корректную сумму цели');
+                    return;
+                }
+                
+                if (!deadline) {
+                    alert('Выберите желаемый срок');
+                    return;
+                }
+                
+                const plan = calculateOptimalPlan(target, deadline);
+                
+                const resultDiv = document.getElementById('optimalPlanResult');
+                resultDiv.style.display = 'block';
+                resultDiv.dataset.plan = JSON.stringify(plan);
+                resultDiv.innerHTML = `
+                    <div class="optimal-plan" style="margin-top: 1rem;">
+                        <h4>📊 Оптимальный план накопления</h4>
+                        <p>
+                            💰 <strong>Ежедневно:</strong> ${plan.dailyPayment.toLocaleString()} ₽<br>
+                            📅 <strong>Еженедельно:</strong> ${plan.weeklyPayment.toLocaleString()} ₽<br>
+                            📆 <strong>Ежемесячно:</strong> ${plan.monthlyPayment.toLocaleString()} ₽<br>
+                            🎯 <strong>Достижение цели:</strong> ${plan.optimalDate} (${plan.optimalMonths} мес.)
+                        </p>
+                        <p style="margin-top: 0.75rem; font-size: 0.85rem; color: ${plan.isRealistic ? '#27ae60' : '#e74c3c'};">
+                            ${plan.isRealistic ? '✅ Ваш срок реалистичен! Исходя из вашей статистики, вы сможете накопить.' : '⚠️ Срок может быть нереалистичен. Рекомендуется увеличить срок до ' + plan.optimalDate}
+                        </p>
+                        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                            💡 Средние ежемесячные накопления: ${plan.avgMonthlySavings.toLocaleString()} ₽
+                        </p>
+                    </div>
+                `;
+                
+                showToast('План рассчитан!');
+            });
+            
+            // Кнопки пополнения
+            container.querySelectorAll('.save-goal-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    const input = container.querySelector(`.save-amount-input[data-id="${id}"]`);
+                    const amount = parseFloat(input.value);
+                    if (amount && amount > 0) {
+                        updateGoalSaving(id, amount);
+                        showToast('Цель пополнена!');
+                        handleRouteChange();
+                    }
+                });
+            });
+            
+            // Кнопки расчёта плана для существующих целей
+            container.querySelectorAll('.calculate-plan-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const goalId = btn.dataset.id;
+                    const goal = data.goals.find(g => g.id === goalId);
+                    if (goal) {
+                        const plan = calculateOptimalPlan(goal.target - goal.saved, goal.deadline);
+                        goal.optimalPlan = plan;
+                        saveData();
+                        showToast('План обновлён!');
+                        renderGoals(container);
+                    }
+                });
+            });
+        }
+
         function renderSettings(container) {
             const data = getData();
             container.innerHTML = `<h2 style="margin-bottom: 1.5rem;">Настройки</h2><div class="card"><h3 style="margin-bottom: 1rem;">Параметры</h3><div class="form-group"><label>Ежемесячный бюджет</label><input type="number" id="budgetInput" value="${data.settings.monthlyBudget}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"></div><button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button></div><div class="card"><h3 style="margin-bottom: 1rem;">Данные</h3><div style="display: flex; gap: 1rem; flex-wrap: wrap;"><button class="btn btn-secondary" id="exportBtn">Экспорт JSON</button><label class="btn btn-secondary" style="cursor: pointer; display: inline-block;">Импорт JSON<input type="file" id="importFile" accept=".json" style="display: none;"></label></div></div><div class="card" style="border: 1px solid #e74c3c;"><h3 style="margin-bottom: 1rem; color: #e74c3c;">Опасная зона</h3><button class="btn btn-danger" id="clearAllBtn">Очистить всё</button></div>`;
@@ -666,22 +987,6 @@
             document.getElementById('exportBtn').addEventListener('click', exportData);
             document.getElementById('importFile').addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (event) => { if (importData(event.target.result)) { showToast('Импортировано'); handleRouteChange(); } else alert('Ошибка формата'); }; reader.readAsText(file); });
             document.getElementById('clearAllBtn').addEventListener('click', () => { if (confirm('Удалить ВСЕ данные?')) { localStorage.removeItem('fintrack_data'); showToast('Очищено'); setTimeout(() => location.reload(), 1000); } });
-        }
-
-        function renderGoals(container) {
-            const data = getData();
-            let html = `<h2 style="margin-bottom: 1.5rem;">Копилки</h2><div class="card"><h3 style="margin-bottom: 1rem;">Новая цель</h3><form id="goalForm" style="display: grid; gap: 1rem;"><input type="text" id="goalName" placeholder="Название" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><input type="number" id="goalTarget" placeholder="Сумма" required step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><button type="submit" class="btn btn-primary">Создать</button></form></div><h3 style="margin: 1.5rem 0 1rem;">Мои цели</h3>`;
-            if (data.goals.length === 0) { html += `<p style="color: var(--text-secondary); text-align: center;">Целей нет</p>`; }
-            else {
-                data.goals.forEach(goal => {
-                    const percent = Math.min((goal.saved / goal.target) * 100, 100);
-                    html += `<div class="card"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;"><h4>${goal.name}</h4><button class="btn btn-danger delete-goal-btn" data-id="${goal.id}" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Удалить</button></div><p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Сохранено: ${goal.saved.toLocaleString()} из ${goal.target.toLocaleString()} ${data.settings.currency}</p><div class="progress-bar"><div class="progress-fill" style="width: ${percent}%"></div></div><div style="margin-top: 1rem; display: flex; gap: 0.5rem;"><input type="number" class="save-amount-input" data-id="${goal.id}" placeholder="Сумма" style="flex: 1; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--warm-gray); background: var(--bg-primary); color: var(--text-primary);"><button class="btn btn-secondary save-goal-btn" data-id="${goal.id}">Пополнить</button></div></div>`;
-                });
-            }
-            container.innerHTML = html;
-            document.getElementById('goalForm').addEventListener('submit', (e) => { e.preventDefault(); addGoal({ name: document.getElementById('goalName').value, target: parseFloat(document.getElementById('goalTarget').value) }); showToast('Цель создана'); renderGoals(container); });
-            container.querySelectorAll('.save-goal-btn').forEach(btn => { btn.addEventListener('click', () => { const id = btn.dataset.id; const input = container.querySelector(`.save-amount-input[data-id="${id}"]`); const amount = parseFloat(input.value); if (amount && amount > 0) { updateGoalSaving(id, amount); showToast('Пополнено'); handleRouteChange(); } }); });
-            container.querySelectorAll('.delete-goal-btn').forEach(btn => { btn.addEventListener('click', () => { if (confirm('Удалить цель?')) { deleteGoal(btn.dataset.id); showToast('Удалено'); handleRouteChange(); } }); });
         }
 
         function renderTimeline(container) {
@@ -694,10 +999,25 @@
             container.querySelectorAll('.delete-sub-btn').forEach(btn => { btn.addEventListener('click', () => { if (confirm('Удалить подписку?')) { deleteSubscription(btn.dataset.id); showToast('Удалено'); handleRouteChange(); } }); });
         }
 
-        const routes = { '/wallet': renderWallet, '/stats': renderStats, '/debts': renderDebts, '/goals': renderGoals, '/timeline': renderTimeline, '/settings': renderSettings };
+        const routes = { 
+            '/wallet': renderWallet, 
+            '/stats': renderStats, 
+            '/debts': renderDebts, 
+            '/goals': renderGoals, 
+            '/timeline': renderTimeline, 
+            '/settings': renderSettings 
+        };
 
         function handleRouteChange() { window.dispatchEvent(new HashChangeEvent('hashchange')); }
         window.handleRouteChange = handleRouteChange;
+        
+        window.deleteGoalItem = (id) => {
+            if (confirm('Удалить эту цель?')) {
+                deleteGoal(id);
+                showToast('Цель удалена');
+                handleRouteChange();
+            }
+        };
 
         function handleRoute() {
             const hash = window.location.hash.slice(1) || '/wallet';
